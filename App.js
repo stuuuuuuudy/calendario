@@ -67,7 +67,7 @@ const App = () => {
                 monthFormat={'yyyy년 M월'}
                 hideArrows={true}
                 onDayPress={day => {
-                    // TODO: 날짜 클릭 시, 할일 추가 레이어 생성
+                    // TODO: 날짜 클릭 시, ScheduleLayer 오픈
                 }}
                 onMonthChange={month => {
                     // TODO: 달을 바꾸면 데이터 로드
@@ -77,7 +77,8 @@ const App = () => {
                         <View style={{height: 100}}>
                             <Text
                                 style={{
-                                    // TODO: left 안 먹는 것 같은데? 일요일만 빨간색으로 하고 싶은데
+                                    // TODO: left 안 먹는 것 같은데
+                                    // TODO: day.js로 체크해서 일요일이면 빨간색으로 바꾸기
                                     textAlign: 'left',
                                     color:
                                         state === 'disabled' ? 'gray' : 'black',
@@ -106,6 +107,11 @@ const App = () => {
                     textDayFontSize: 16,
                     textMonthFontSize: 20,
                     textDayHeaderFontSize: 16,
+                    'stylesheet.calendar.header': {
+                        dayTextAtIndex0: {
+                            color: 'red',
+                        },
+                    },
                 }}
             />
         </SafeAreaView>
