@@ -64,7 +64,7 @@ const App = () => {
             <CalendarList
                 style={{height: 700}}
                 horizontal={true}
-                monthFormat={'yyyy년 M월'}
+                monthFormat="yyyy년 M월"
                 hideArrows={true}
                 onDayPress={day => {
                     // TODO: 날짜 클릭 시, ScheduleLayer 오픈
@@ -73,15 +73,14 @@ const App = () => {
                     // TODO: 달을 바꾸면 데이터 로드
                 }}
                 dayComponent={({date, state}) => {
+                    const isSunday = new Date(date.dateString).getDay() === 0;
                     return (
                         <View style={{height: 100}}>
                             <Text
                                 style={{
                                     // TODO: left 안 먹는 것 같은데
-                                    // TODO: day.js로 체크해서 일요일이면 빨간색으로 바꾸기
                                     textAlign: 'left',
-                                    color:
-                                        state === 'disabled' ? 'gray' : 'black',
+                                    color: isSunday ? 'red' : 'black',
                                 }}>
                                 {date.day}
                             </Text>
