@@ -1,14 +1,24 @@
-import React, {useState} from 'react';
-import {FlatList, View, Text, StyleSheet} from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
 const ScheduleItem = title => {
     return (
-        <View>
-            <Text>{title}</Text>
+        <View style={styles.item}>
+            <Text style={styles.text}>{title}</Text>
         </View>
     );
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    item: {
+        flexDirection: 'row',
+        padding: 16,
+        alignItems: 'center',
+    },
+    text: {
+        flex: 1,
+        fontSize: 16,
+        color: '#212121',
+    },
+});
 
 export default ScheduleItem;
