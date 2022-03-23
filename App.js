@@ -64,9 +64,9 @@ const App = () => {
     // TODO: state를 app에서 다 설정하고 다 props로 넘기는 형태?
     const [schedules, setSchedules] = useState({
         '2022-03-11': [
-            {id: 1, schedule: '할 일 1'},
-            {id: 2, schedule: '할 일 2'},
-            {id: 3, schedule: '할 일 3'},
+            {id: 1, title: '할 일 1'},
+            {id: 2, title: '할 일 2'},
+            {id: 3, title: '할 일 3'},
         ],
     });
     const [showListModal, setShowListModal] = useState(false);
@@ -79,7 +79,7 @@ const App = () => {
             tmpSchedule.length > 0
                 ? Math.max(...tmpSchedule.map(v => v.id)) + 1
                 : 1;
-        const schedule = {schedule: text, id: nextId};
+        const schedule = {title: text, id: nextId};
         setSchedules({
             ...schedules,
             selectedDate: tmpSchedule.concat(schedule),
