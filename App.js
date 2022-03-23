@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
     Calendar,
     CalendarList,
@@ -14,6 +14,8 @@ import {
     useColorScheme,
     View,
 } from 'react-native';
+import ScheduleListModal from './components/ScheduleListModal';
+import ScheduleAddModal from './components/ScheduleAddModal';
 
 LocaleConfig.locales['ko'] = {
     monthNames: [
@@ -59,28 +61,69 @@ LocaleConfig.locales['ko'] = {
 LocaleConfig.defaultLocale = 'ko';
 
 const App = () => {
+    // TODO: state를 app에서 다 설정하고 다 props로 넘기는 형태?
+    const [schedules, setSchedules] = useState({
+        '2022-03-11': [
+            {id: 1, schedule: '할 일 1'},
+            {id: 2, schedule: '할 일 2'},
+            {id: 3, schedule: '할 일 3'},
+        ],
+    });
+    const [showListModal, setShowListModal] = useState(false);
+    const [showAddModal, setShowAddModal] = useState(false);
+    const [selectedDate, setSelectedDate] = useState(null);
+
+    const onSave = text => {
+        const tmpSchedule = schedules[selectedDate] || [];
+        const nextId =
+            tmpSchedule.length > 0
+                ? Math.max(...tmpSchedule.map(v => v.id)) + 1
+                : 1;
+        const schedule = {schedule: text, id: nextId};
+        setSchedules({
+            ...schedules,
+            selectedDate: tmpSchedule.concat(schedule),
+        });
+    };
+
     return (
-        <SafeAreaView style={{height: 1000}}>
+        <SafeAreaView style={styles.centeredView}>
+            <ScheduleListModal
+                schedules={schedules[selectedDate] || []}
+                showListModal={showListModal}
+                setShowListModal={setShowListModal}
+                setShowAddModal={setShowAddModal}
+            />
+            <ScheduleAddModal
+                showAddModal={showAddModal}
+                setShowAddModal={setShowAddModal}
+                onSave={onSave}
+            />
             <CalendarList
                 style={{height: 700}}
                 horizontal={true}
                 monthFormat="yyyy년 M월"
                 hideArrows={true}
                 onDayPress={day => {
-                    // TODO: 날짜 클릭 시, ScheduleLayer 오픈
+                    // TODO: day 포맷에 맞춰서 schedule state도 바꿔주기
+                    // 날짜 클릭 시, 리스트modal 오픈
+                    setSelectedDate(day);
+                    setShowListModal(true);
                 }}
                 onMonthChange={month => {
                     // TODO: 달을 바꾸면 데이터 로드
                 }}
-                dayComponent={({date, state}) => {
-                    const isSunday = new Date(date.dateString).getDay() === 0;
+                dayComponent={({date}) => {
                     return (
                         <View style={{height: 100}}>
                             <Text
                                 style={{
                                     // TODO: left 안 먹는 것 같은데
                                     textAlign: 'left',
-                                    color: isSunday ? 'red' : 'black',
+                                    color:
+                                        new Date(date.dateString).getDay() === 0
+                                            ? 'red'
+                                            : 'black',
                                 }}>
                                 {date.day}
                             </Text>
@@ -118,7 +161,12 @@ const App = () => {
 };
 
 const styles = StyleSheet.create({
-    // ...
+    centeredView: {
+        flex: 1,
+        justifyContent: 'center',
+        alignItems: 'center',
+        height: 1000,
+    },
 });
 
 export default App;
