@@ -1,10 +1,12 @@
+import React from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 
-const ScheduleItem = title => {
+const ScheduleItem = ({title}) => {
     return (
-        <View style={styles.item}>
-            <Text style={styles.text}>{title}</Text>
-        </View>
+        <Text style={styles.text}>{title}</Text>
+        // <View style={styles.item}>
+        //     <Text>{title}</Text>
+        // </View>
     );
 };
 

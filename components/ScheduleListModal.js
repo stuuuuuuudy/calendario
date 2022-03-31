@@ -33,7 +33,7 @@ const ScheduleLayer = ({
                         style={styles.list}
                         data={schedules}
                         renderItem={({item}) => (
-                            <ScheduleItem id={item.id} text={item.title} />
+                            <ScheduleItem title={item.title} />
                         )}
                         keyExtractor={item => item.id.toString()}
                     />

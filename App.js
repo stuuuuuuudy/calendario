@@ -86,11 +86,13 @@ const App = () => {
         });
     };
 
-    const onDayPress2 = date => {
-        console.log('date=>', date);
+    // TODO: 호이스팅 문제에 대해 찾아보기
+    // onPress={onPress}는 전체 호출
+    // onPress={() => onPress}는 괜찮음
+    const openListModal = date => {
         // 날짜 클릭 시, 리스트modal 오픈
-        // setSelectedDate(date.dateString);
-        // setShowListModal(true);
+        setSelectedDate(date.dateString);
+        setShowListModal(true);
     };
 
     return (
@@ -111,14 +113,15 @@ const App = () => {
                 horizontal={true}
                 monthFormat="yyyy년 M월"
                 hideArrows={true}
+                onDayPress={day => openListModal(day)}
                 onMonthChange={month => {
                     // TODO: 달을 바꾸면 데이터 로드
                 }}
-                dayComponent={({date}) => {
+                dayComponent={({date, onPress}) => {
                     return (
                         <TouchableOpacity
                             style={styles.dayComponent}
-                            onPress={onDayPress2(date)}>
+                            onPress={() => onPress(date)}>
                             <Text
                                 style={{
                                     // TODO: left 안 먹는 것 같은데
@@ -172,7 +175,6 @@ const styles = StyleSheet.create({
     },
     dayComponent: {
         height: 100,
-        backgroundColor: 'gold',
     },
 });
 
