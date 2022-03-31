@@ -13,6 +13,7 @@ import {
     Text,
     useColorScheme,
     View,
+    TouchableOpacity,
 } from 'react-native';
 import ScheduleListModal from './components/ScheduleListModal';
 import ScheduleAddModal from './components/ScheduleAddModal';
@@ -61,7 +62,6 @@ LocaleConfig.locales['ko'] = {
 LocaleConfig.defaultLocale = 'ko';
 
 const App = () => {
-    // TODO: state를 app에서 다 설정하고 다 props로 넘기는 형태?
     const [schedules, setSchedules] = useState({
         '2022-03-11': [
             {id: 1, title: '할 일 1'},
@@ -86,6 +86,13 @@ const App = () => {
         });
     };
 
+    const onDayPress2 = date => {
+        console.log('date=>', date);
+        // 날짜 클릭 시, 리스트modal 오픈
+        // setSelectedDate(date.dateString);
+        // setShowListModal(true);
+    };
+
     return (
         <SafeAreaView style={styles.centeredView}>
             <ScheduleListModal
@@ -104,18 +111,14 @@ const App = () => {
                 horizontal={true}
                 monthFormat="yyyy년 M월"
                 hideArrows={true}
-                onDayPress={day => {
-                    // TODO: day 포맷에 맞춰서 schedule state도 바꿔주기
-                    // 날짜 클릭 시, 리스트modal 오픈
-                    setSelectedDate(day);
-                    setShowListModal(true);
-                }}
                 onMonthChange={month => {
                     // TODO: 달을 바꾸면 데이터 로드
                 }}
                 dayComponent={({date}) => {
                     return (
-                        <View style={{height: 100}}>
+                        <TouchableOpacity
+                            style={styles.dayComponent}
+                            onPress={onDayPress2(date)}>
                             <Text
                                 style={{
                                     // TODO: left 안 먹는 것 같은데
@@ -127,7 +130,7 @@ const App = () => {
                                 }}>
                                 {date.day}
                             </Text>
-                        </View>
+                        </TouchableOpacity>
                     );
                 }}
                 theme={{
@@ -166,6 +169,10 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         height: 1000,
+    },
+    dayComponent: {
+        height: 100,
+        backgroundColor: 'gold',
     },
 });
 
