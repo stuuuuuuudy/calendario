@@ -12,7 +12,7 @@ const styles = StyleSheet.create({
         fontSize: 16,
         color: '#212121',
         padding: 10,
-        alignItems: 'left',
+        alignItems: 'flex-start',
     },
 });
 

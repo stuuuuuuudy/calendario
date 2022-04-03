@@ -61,6 +61,8 @@ LocaleConfig.locales['ko'] = {
 };
 LocaleConfig.defaultLocale = 'ko';
 
+// TODO: 일정 있으면 달력에 표시하기
+// TODO: Redux 써보기
 const App = () => {
     const [schedules, setSchedules] = useState({
         '2022-03-11': [
@@ -82,7 +84,7 @@ const App = () => {
         const schedule = {title: text, id: nextId};
         setSchedules({
             ...schedules,
-            selectedDate: tmpSchedule.concat(schedule),
+            [selectedDate]: tmpSchedule.concat(schedule),
         });
     };
 
