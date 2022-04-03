@@ -25,7 +25,7 @@ const ScheduleLayer = ({
         <Modal animationType="slide" transparent={true} visible={showListModal}>
             <View style={styles.modalView}>
                 {schedules.length === 0 ? (
-                    <Text style={styles.modalText}>
+                    <Text style={styles.emptyText}>
                         이 날의 일정이 없습니다.
                     </Text>
                 ) : (
@@ -38,10 +38,11 @@ const ScheduleLayer = ({
                         keyExtractor={item => item.id.toString()}
                     />
                 )}
-                <TouchableOpacity activeOpacity={0.5} onPress={onPress}>
-                    <View style={styles.addButton}>
-                        <Text>+</Text>
-                    </View>
+                <TouchableOpacity
+                    style={styles.addButton}
+                    activeOpacity={0.5}
+                    onPress={() => onPress}>
+                    <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
             </View>
         </Modal>
@@ -49,9 +50,27 @@ const ScheduleLayer = ({
 };
 
 const styles = StyleSheet.create({
-    empty: {},
+    emptyText: {
+        marginBottom: 15,
+        textAlign: 'center',
+    },
     list: {},
-    addButton: {},
+    addButton: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        position: 'absolute',
+        right: 0,
+        bottom: 0,
+        margin: 10,
+        width: 50,
+        height: 50,
+        borderRadius: 50,
+        backgroundColor: '#fe5746',
+    },
+    addButtonText: {
+        color: '#ffffff',
+        fontSize: 30,
+    },
     modalView: {
         margin: 20,
         marginTop: 100,
@@ -68,10 +87,6 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: 'center',
     },
     button: {
         borderRadius: 20,

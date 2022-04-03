@@ -1,25 +1,18 @@
 import React from 'react';
-import {View, Text, StyleSheet} from 'react-native';
+import {Text, StyleSheet} from 'react-native';
 
 const ScheduleItem = ({title}) => {
-    return (
-        <Text style={styles.text}>{title}</Text>
-        // <View style={styles.item}>
-        //     <Text>{title}</Text>
-        // </View>
-    );
+    return <Text style={styles.text}>{title}</Text>;
 };
 
 const styles = StyleSheet.create({
-    item: {
-        flexDirection: 'row',
-        padding: 16,
-        alignItems: 'center',
-    },
     text: {
         flex: 1,
+        flexDirection: 'row',
         fontSize: 16,
         color: '#212121',
+        padding: 10,
+        alignItems: 'left',
     },
 });
 
