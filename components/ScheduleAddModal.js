@@ -16,9 +16,9 @@ const ScheduleLayer = ({showAddModal, setShowAddModal, onSave}) => {
     };
     const onPressSave = () => {
         onSave(text);
-        setText('');
         Keyboard.dismiss();
         setShowAddModal(false);
+        setText('');
     };
 
     return (
