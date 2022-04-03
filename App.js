@@ -86,9 +86,8 @@ const App = () => {
         });
     };
 
-    // TODO: 호이스팅 문제에 대해 찾아보기
-    // onPress={onPress}는 전체 호출
-    // onPress={() => onPress}는 괜찮음
+    // TODO: onPress 관련 문제
+    // https://intrepidgeeks.com/tutorial/event-function-error-in-react-reactnative-automatic-execution
     const openListModal = date => {
         // 날짜 클릭 시, 리스트modal 오픈
         setSelectedDate(date.dateString);

@@ -41,7 +41,7 @@ const ScheduleLayer = ({
                 <TouchableOpacity
                     style={styles.addButton}
                     activeOpacity={0.5}
-                    onPress={() => onPress}>
+                    onPress={onPress}>
                     <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
             </View>
