@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Provider} from 'react-redux';
+import {Provider, useSelector, useDispatch} from 'react-redux';
 import {
     Calendar,
     CalendarList,
@@ -18,6 +18,7 @@ import {
 } from 'react-native';
 import ScheduleListModal from './components/ScheduleListModal';
 import ScheduleAddModal from './components/ScheduleAddModal';
+import { add } from './modules/schedules';
 
 import { createStore } from 'redux';
 import rootReducer from './modules';
@@ -67,32 +68,17 @@ LocaleConfig.locales['ko'] = {
 };
 LocaleConfig.defaultLocale = 'ko';
 
+
+
 // TODO: 일정 있으면 달력에 표시하기
 // TODO: Redux 써보기
 const App = () => {
-    const [schedules, setSchedules] = useState({
-        '2022-03-11': [
-            {id: 1, title: '할 일 1'},
-            {id: 2, title: '할 일 2'},
-            {id: 3, title: '할 일 3'},
-        ],
-    });
+    const schedules = useSelector(state => state);
+    const dispatch = useDispatch();
+    const onSave = text => dispatch(add(text));
     const [showListModal, setShowListModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
-
-    const onSave = text => {
-        const tmpSchedule = schedules[selectedDate] || [];
-        const nextId =
-            tmpSchedule.length > 0
-                ? Math.max(...tmpSchedule.map(v => v.id)) + 1
-                : 1;
-        const schedule = {title: text, id: nextId};
-        setSchedules({
-            ...schedules,
-            [selectedDate]: tmpSchedule.concat(schedule),
-        });
-    };
 
     // TODO: onPress 관련 문제
     // https://intrepidgeeks.com/tutorial/event-function-error-in-react-reactnative-automatic-execution
@@ -103,7 +89,6 @@ const App = () => {
     };
 
     return (
-        <Provider store={store}>
             <SafeAreaView style={styles.centeredView}>
                 <ScheduleListModal
                     schedules={schedules[selectedDate] || []}
@@ -171,7 +156,6 @@ const App = () => {
                     }}
                 />
             </SafeAreaView>
-        </Provider>
     );
 };
 
