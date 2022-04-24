@@ -13,11 +13,11 @@ export const add = (date, title) => ({
 
 // 초기 상태 선언
 const initialState = {
-    // '2022-03-11': [
-    //     {id: 1, title: '할 일 1'},
-    //     {id: 2, title: '할 일 2'},
-    //     {id: 3, title: '할 일 3'},
-    // ],
+    '2022-04-11': [
+        {id: 1, title: '할 일 1'},
+        {id: 2, title: '할 일 2'},
+        {id: 3, title: '할 일 3'},
+    ],
 };
 
 // 리듀서 선언

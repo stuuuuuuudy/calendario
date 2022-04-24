@@ -20,11 +20,6 @@ import ScheduleListModal from './components/ScheduleListModal';
 import ScheduleAddModal from './components/ScheduleAddModal';
 import { add } from './modules/schedules';
 
-import { createStore } from 'redux';
-import rootReducer from './modules';
-
-const store = createStore(rootReducer); // 스토어 생성
-
 LocaleConfig.locales['ko'] = {
     monthNames: [
         '1월',
@@ -73,7 +68,7 @@ LocaleConfig.defaultLocale = 'ko';
 // TODO: 일정 있으면 달력에 표시하기
 // TODO: Redux 써보기
 const App = () => {
-    const schedules = useSelector(state => state);
+    const {schedules} = useSelector(state => state);
     const dispatch = useDispatch();
     const onSave = text => dispatch(add(text));
     const [showListModal, setShowListModal] = useState(false);
