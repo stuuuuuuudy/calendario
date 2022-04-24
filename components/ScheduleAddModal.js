@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     View,
     Text,
@@ -7,13 +7,11 @@ import {
     Modal,
     TextInput,
     Keyboard,
+    Pressable,
 } from 'react-native';
 
-const ScheduleLayer = ({showAddModal, setShowAddModal, onSave}) => {
+const ScheduleLayer = ({ showAddModal, setShowAddModal, onSave }) => {
     const [text, setText] = useState('');
-    const onClose = () => {
-        setShowAddModal(false);
-    };
     const onPressSave = () => {
         onSave(text);
         Keyboard.dismiss();
@@ -23,7 +21,19 @@ const ScheduleLayer = ({showAddModal, setShowAddModal, onSave}) => {
 
     return (
         <Modal animationType="slide" transparent={true} visible={showAddModal}>
+            <Pressable style={styles.background}
+                onPress={() => setShowAddModal(false)}
+            />
             <View style={styles.modalView}>
+                <View style={styles.buttonView}>
+                    <TouchableOpacity activeOpacity={0.5} onPress={() => setShowAddModal(false)}>
+                        <Text style={styles.closeButton}>X</Text>
+                    </TouchableOpacity>
+                    <TouchableOpacity activeOpacity={0.5} onPress={onPressSave}>
+                        <Text style={styles.saveButton}>V</Text>
+                    </TouchableOpacity>
+
+                </View>
                 <TextInput
                     placeholder="일정 제목"
                     style={styles.input}
@@ -32,33 +42,28 @@ const ScheduleLayer = ({showAddModal, setShowAddModal, onSave}) => {
                     onSubmitEditing={onPressSave}
                     returnKeyType="done"
                 />
-                <TouchableOpacity activeOpacity={0.5} onPress={onClose}>
-                    <View style={styles.addButton}>
-                        <Text>닫기</Text>
-                    </View>
-                </TouchableOpacity>
-                <TouchableOpacity activeOpacity={0.5} onPress={onPressSave}>
-                    <View style={styles.buttonStyle}>
-                        <Text>저장</Text>
-                    </View>
-                </TouchableOpacity>
             </View>
         </Modal>
     );
 };
 
 const styles = StyleSheet.create({
-    empty: {},
-    list: {},
-    addButton: {},
+    background: {
+        flex: 1,
+        backgroundColor: 'transparent',
+    },
+    buttonView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+    },
     modalView: {
-        margin: 20,
-        marginTop: 100,
+        margin: 50,
+        marginTop: 150,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        padding: 20,
         height: 400,
-        alignItems: 'center',
+        width: 300,
         shadowColor: '#000',
         shadowOffset: {
             width: 0,
@@ -67,26 +72,27 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+        position: 'absolute',
+    },
+    input: {
+        fontSize: 20,
     },
     modalText: {
         marginBottom: 15,
         textAlign: 'center',
     },
-    button: {
+    closeButton: {
         borderRadius: 20,
         padding: 10,
         elevation: 2,
+        color: '#e9e9e9',
     },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
-    },
-    buttonClose: {
-        backgroundColor: '#2196F3',
-    },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
+    saveButton: {
+        borderRadius: 20,
+        padding: 10,
+        elevation: 2,
+        alignSelf: 'flex-end',
+        color: '#e9e9e9',
     },
 });
 

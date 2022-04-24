@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from 'react';
 import {
     FlatList,
     View,
@@ -6,10 +6,12 @@ import {
     StyleSheet,
     TouchableOpacity,
     Modal,
+    Pressable,
 } from 'react-native';
 import ScheduleItem from './ScheduleItem';
 
 const ScheduleLayer = ({
+    selectedDate,
     schedules,
     showListModal,
     setShowListModal,
@@ -23,7 +25,11 @@ const ScheduleLayer = ({
 
     return (
         <Modal animationType="slide" transparent={true} visible={showListModal}>
+            <Pressable style={styles.background}
+                onPress={() => setShowListModal(false)}
+            />
             <View style={styles.modalView}>
+                <Text style={styles.dateText}>{selectedDate}</Text>
                 {schedules.length === 0 ? (
                     <Text style={styles.emptyText}>
                         이 날의 일정이 없습니다.
@@ -32,7 +38,7 @@ const ScheduleLayer = ({
                     <FlatList
                         style={styles.list}
                         data={schedules}
-                        renderItem={({item}) => (
+                        renderItem={({ item }) => (
                             <ScheduleItem title={item.title} />
                         )}
                         keyExtractor={item => item.id.toString()}
@@ -50,6 +56,15 @@ const ScheduleLayer = ({
 };
 
 const styles = StyleSheet.create({
+    background: {
+        flex: 1,
+        backgroundColor: 'transparent',
+    },
+    dateText: {
+        fontSize: 20,
+        textAlign: 'left',
+        margin: 20,
+    },
     emptyText: {
         marginBottom: 15,
         textAlign: 'center',
@@ -72,12 +87,14 @@ const styles = StyleSheet.create({
         fontSize: 30,
     },
     modalView: {
-        margin: 20,
-        marginTop: 100,
+        margin: 50,
+        marginTop: 150,
         backgroundColor: 'white',
         borderRadius: 20,
-        padding: 35,
+        // padding: 10,
         height: 400,
+        width: 300,
+        alignContent: 'center',
         alignItems: 'center',
         shadowColor: '#000',
         shadowOffset: {
@@ -87,6 +104,7 @@ const styles = StyleSheet.create({
         shadowOpacity: 0.25,
         shadowRadius: 4,
         elevation: 5,
+        position: 'absolute',
     },
     button: {
         borderRadius: 20,

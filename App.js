@@ -1,19 +1,13 @@
-import React, {useState} from 'react';
-import {Provider, useSelector, useDispatch} from 'react-redux';
+import React, { useState } from 'react';
+import { Provider, useSelector, useDispatch } from 'react-redux';
 import {
-    Calendar,
     CalendarList,
-    Agenda,
     LocaleConfig,
 } from 'react-native-calendars';
 import {
     SafeAreaView,
-    ScrollView,
-    StatusBar,
     StyleSheet,
     Text,
-    useColorScheme,
-    View,
     TouchableOpacity,
 } from 'react-native';
 import ScheduleListModal from './components/ScheduleListModal';
@@ -63,12 +57,9 @@ LocaleConfig.locales['ko'] = {
 };
 LocaleConfig.defaultLocale = 'ko';
 
-
-
 // TODO: 일정 있으면 달력에 표시하기
-// TODO: Redux 써보기
 const App = () => {
-    const {schedules} = useSelector(state => state);
+    const { schedules } = useSelector(state => state);
     const dispatch = useDispatch();
     const onSave = text => dispatch(add(text));
     const [showListModal, setShowListModal] = useState(false);
@@ -84,73 +75,74 @@ const App = () => {
     };
 
     return (
-            <SafeAreaView style={styles.centeredView}>
-                <ScheduleListModal
-                    schedules={schedules[selectedDate] || []}
-                    showListModal={showListModal}
-                    setShowListModal={setShowListModal}
-                    setShowAddModal={setShowAddModal}
-                />
-                <ScheduleAddModal
-                    showAddModal={showAddModal}
-                    setShowAddModal={setShowAddModal}
-                    onSave={onSave}
-                />
-                <CalendarList
-                    style={{height: 700}}
-                    horizontal={true}
-                    monthFormat="yyyy년 M월"
-                    hideArrows={true}
-                    onDayPress={day => openListModal(day)}
-                    onMonthChange={month => {
-                        // TODO: 달을 바꾸면 데이터 로드
-                    }}
-                    dayComponent={({date, onPress}) => {
-                        return (
-                            <TouchableOpacity
-                                style={styles.dayComponent}
-                                onPress={() => onPress(date)}>
-                                <Text
-                                    style={{
-                                        // TODO: left 안 먹는 것 같은데
-                                        textAlign: 'left',
-                                        color:
-                                            new Date(date.dateString).getDay() === 0
-                                                ? 'red'
-                                                : 'black',
-                                    }}>
-                                    {date.day}
-                                </Text>
-                            </TouchableOpacity>
-                        );
-                    }}
-                    theme={{
-                        backgroundColor: '#e9e9e9',
-                        calendarBackground: '#ffffff',
-                        textSectionTitleColor: '#b6c1cd',
-                        textSectionTitleDisabledColor: '#d9e1e8',
-                        selectedDayBackgroundColor: '#00adf5',
-                        selectedDayTextColor: '#ffffff',
-                        todayTextColor: '#00adf5',
-                        dayTextColor: '#2d4150',
-                        textDisabledColor: '#d9e1e8',
-                        dotColor: '#00adf5',
-                        selectedDotColor: '#ffffff',
-                        monthTextColor: 'black',
-                        // textDayFontWeight: '300',
-                        textMonthFontWeight: 'bold',
-                        // textDayHeaderFontWeight: '300',
-                        textDayFontSize: 16,
-                        textMonthFontSize: 20,
-                        textDayHeaderFontSize: 16,
-                        'stylesheet.calendar.header': {
-                            dayTextAtIndex0: {
-                                color: 'red',
-                            },
+        <SafeAreaView style={styles.centeredView}>
+            <ScheduleListModal
+                selectedDate={selectedDate}
+                schedules={schedules[selectedDate] || []}
+                showListModal={showListModal}
+                setShowListModal={setShowListModal}
+                setShowAddModal={setShowAddModal}
+            />
+            <ScheduleAddModal
+                showAddModal={showAddModal}
+                setShowAddModal={setShowAddModal}
+                onSave={onSave}
+            />
+            <CalendarList
+                style={{ height: 700 }}
+                horizontal={true}
+                monthFormat="yyyy년 M월"
+                hideArrows={true}
+                onDayPress={day => openListModal(day)}
+                onMonthChange={month => {
+                    // TODO: 달을 바꾸면 데이터 로드
+                }}
+                dayComponent={({ date, onPress }) => {
+                    return (
+                        <TouchableOpacity
+                            style={styles.dayComponent}
+                            onPress={() => onPress(date)}>
+                            <Text
+                                style={{
+                                    // TODO: left 안 먹는 것 같은데
+                                    textAlign: 'left',
+                                    color:
+                                        new Date(date.dateString).getDay() === 0
+                                            ? 'red'
+                                            : 'black',
+                                }}>
+                                {date.day}
+                            </Text>
+                        </TouchableOpacity>
+                    );
+                }}
+                theme={{
+                    backgroundColor: '#e9e9e9',
+                    calendarBackground: '#ffffff',
+                    textSectionTitleColor: '#b6c1cd',
+                    textSectionTitleDisabledColor: '#d9e1e8',
+                    selectedDayBackgroundColor: '#00adf5',
+                    selectedDayTextColor: '#ffffff',
+                    todayTextColor: '#00adf5',
+                    dayTextColor: '#2d4150',
+                    textDisabledColor: '#d9e1e8',
+                    dotColor: '#00adf5',
+                    selectedDotColor: '#ffffff',
+                    monthTextColor: 'black',
+                    // textDayFontWeight: '300',
+                    textMonthFontWeight: 'bold',
+                    // textDayHeaderFontWeight: '300',
+                    textDayFontSize: 16,
+                    textMonthFontSize: 20,
+                    textDayHeaderFontSize: 16,
+                    'stylesheet.calendar.header': {
+                        dayTextAtIndex0: {
+                            color: 'red',
                         },
-                    }}
-                />
-            </SafeAreaView>
+                    },
+                }}
+            />
+        </SafeAreaView>
     );
 };
 
