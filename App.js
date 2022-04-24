@@ -61,10 +61,10 @@ LocaleConfig.defaultLocale = 'ko';
 const App = () => {
     const { schedules } = useSelector(state => state);
     const dispatch = useDispatch();
-    const onSave = text => dispatch(add(text));
     const [showListModal, setShowListModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
+    const onSave = text => dispatch(add(selectedDate, text));
 
     // TODO: onPress 관련 문제
     // https://intrepidgeeks.com/tutorial/event-function-error-in-react-reactnative-automatic-execution
