@@ -13,26 +13,33 @@ export const add = (date, title) => ({
 
 // 초기 상태 선언
 const initialState = {
-    '2022-04-11': [
-        { id: 1, title: '할 일 1' },
-        { id: 2, title: '할 일 2' },
-        { id: 3, title: '할 일 3' },
-    ],
+    schedules: {
+        '2022-04-11': [
+            { id: 1, title: '할 일 1' },
+            { id: 2, title: '할 일 2' },
+            { id: 3, title: '할 일 3' },
+        ],
+    },
+    markedDates: {
+        '2022-04-11': { marked: true, dotColor: 'red' },
+    },
 };
 
 // 리듀서 선언
 export default function reducer(state = initialState, action) {
+    const getMarkedDates = (value) => Object.keys(value).reduce((acc, cur) => ({ ...acc, [cur]: { marked: true, dotColor: 'red' } }), {});
+
     switch (action.type) {
         case ADD:
-            const tmpSchedule = state[action.date] || [];
+            const tmpSchedule = state.schedules[action.date] || [];
             const nextId =
                 tmpSchedule.length > 0
                     ? Math.max(...tmpSchedule.map(v => v.id)) + 1
                     : 1;
-            const addSchedule = { title: action.title, id: nextId };
+            const newSchedules = { ...state.schedules, [action.date]: tmpSchedule.concat({ title: action.title, id: nextId }) };
             return {
-                ...state,
-                [action.date]: tmpSchedule.concat(addSchedule),
+                schedules: newSchedules,
+                markedDates: getMarkedDates(newSchedules)
             };
         case DELETE:
             return state;

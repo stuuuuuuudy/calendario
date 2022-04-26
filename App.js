@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { Provider, useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
 import {
-    CalendarList,
+    Calendar,
     LocaleConfig,
 } from 'react-native-calendars';
 import {
@@ -57,19 +57,17 @@ LocaleConfig.locales['ko'] = {
 };
 LocaleConfig.defaultLocale = 'ko';
 
-// TODO: 일정 있으면 달력에 표시하기
 const App = () => {
-    const { schedules } = useSelector(state => state);
+    const { schedules, markedDates } = (useSelector(state => state)).schedules;
     const dispatch = useDispatch();
     const [showListModal, setShowListModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
     const onSave = text => dispatch(add(selectedDate, text));
 
-    // TODO: onPress 관련 문제
-    // https://intrepidgeeks.com/tutorial/event-function-error-in-react-reactnative-automatic-execution
+    // onPress 함수 관련 : https://intrepidgeeks.com/tutorial/event-function-error-in-react-reactnative-automatic-execution
     const openListModal = date => {
-        // 날짜 클릭 시, 리스트modal 오픈
+        // 날짜 클릭 시, 리스트 modal 오픈
         setSelectedDate(date.dateString);
         setShowListModal(true);
     };
@@ -88,33 +86,14 @@ const App = () => {
                 setShowAddModal={setShowAddModal}
                 onSave={onSave}
             />
-            <CalendarList
-                style={{ height: 700 }}
-                horizontal={true}
+            <Calendar
+                style={{ height: 1000 }}
                 monthFormat="yyyy년 M월"
-                hideArrows={true}
+                markedDates={markedDates}
+                enableSwipeMonths={true}
                 onDayPress={day => openListModal(day)}
                 onMonthChange={month => {
                     // TODO: 달을 바꾸면 데이터 로드
-                }}
-                dayComponent={({ date, onPress }) => {
-                    return (
-                        <TouchableOpacity
-                            style={styles.dayComponent}
-                            onPress={() => onPress(date)}>
-                            <Text
-                                style={{
-                                    // TODO: left 안 먹는 것 같은데
-                                    textAlign: 'left',
-                                    color:
-                                        new Date(date.dateString).getDay() === 0
-                                            ? 'red'
-                                            : 'black',
-                                }}>
-                                {date.day}
-                            </Text>
-                        </TouchableOpacity>
-                    );
                 }}
                 theme={{
                     backgroundColor: '#e9e9e9',
@@ -148,10 +127,7 @@ const App = () => {
 
 const styles = StyleSheet.create({
     centeredView: {
-        flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
-        height: 1000,
+        // height: 1000,
     },
     dayComponent: {
         height: 100,

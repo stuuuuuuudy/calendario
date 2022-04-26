@@ -23,6 +23,8 @@ const ScheduleLayer = ({
         setShowAddModal(true);
     };
 
+    // TODO: 리스트 클릭 시 수정할 수 있게 띄우기
+
     return (
         <Modal animationType="slide" transparent={true} visible={showListModal}>
             <Pressable style={styles.background}
