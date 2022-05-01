@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import {
-    FlatList,
+    Dimensions,
+    Animated,
     View,
     Text,
     StyleSheet,
@@ -8,6 +9,7 @@ import {
     Modal,
     Pressable,
 } from 'react-native';
+import { SwipeListView } from 'react-native-swipe-list-view';
 import ScheduleItem from './ScheduleItem';
 
 const ScheduleLayer = ({
@@ -17,13 +19,32 @@ const ScheduleLayer = ({
     setShowListModal,
     setShowAddModal,
 }) => {
-    const onPress = () => {
-        // 추가 버튼 누르면 리스트modal 닫히고 추가modal 오픈
+    const showAddModal = () => {
+        // 추가 버튼 누르면 리스트modal 닫히고 추가 modal 오픈
         setShowListModal(false);
         setShowAddModal(true);
     };
 
-    // TODO: 리스트 클릭 시 수정할 수 있게 띄우기
+    const showModifyModal = () => {
+        // TODO: 수정
+    };
+
+    const onDeleteSchedule = swipeData => {
+        const { key, value } = swipeData;
+        if (
+            value < -Dimensions.get('window').width &&
+            !this.animationIsRunning
+        ) {
+            this.animationIsRunning = true;
+            Animated.timing(rowTranslateAnimatedValues[key], {
+                toValue: 0,
+                duration: 200,
+            }).start(() => {
+                // TODO: 삭제
+                this.animationIsRunning = false;
+            });
+        }
+    };
 
     return (
         <Modal animationType="slide" transparent={true} visible={showListModal}>
@@ -37,19 +58,33 @@ const ScheduleLayer = ({
                         이 날의 일정이 없습니다.
                     </Text>
                 ) : (
-                    <FlatList
-                        style={styles.list}
+                    <SwipeListView
                         data={schedules}
-                        renderItem={({ item }) => (
-                            <ScheduleItem title={item.title} />
+                        renderItem={(data) => (
+                            <View style={styles.rowFront}>
+                                <ScheduleItem title={data.item.title} onPress={showModifyModal} />
+                            </View>
                         )}
-                        keyExtractor={item => item.id.toString()}
+                        renderHiddenItem={(data, rowMap) => (
+                            <View style={styles.rowBack}>
+                                <View style={[styles.backRightBtn, styles.backRightBtnRight]}>
+                                    <Text style={styles.backTextWhite}>Delete</Text>
+                                </View>
+                            </View>
+                        )}
+                        disableRightSwipe
+                        rightOpenValue={-Dimensions.get('window').width}
+                        previewRowKey={'0'}
+                        previewOpenValue={-40}
+                        previewOpenDelay={3000}
+                        onSwipeValueChange={onDeleteSchedule}
+                        useNativeDriver={false}
                     />
                 )}
                 <TouchableOpacity
                     style={styles.addButton}
                     activeOpacity={0.5}
-                    onPress={onPress}>
+                    onPress={showAddModal}>
                     <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
             </View>
@@ -71,7 +106,6 @@ const styles = StyleSheet.create({
         marginBottom: 15,
         textAlign: 'center',
     },
-    list: {},
     addButton: {
         alignItems: 'center',
         justifyContent: 'center',
@@ -108,21 +142,33 @@ const styles = StyleSheet.create({
         elevation: 5,
         position: 'absolute',
     },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
+    backTextWhite: {
+        color: '#FFF',
     },
-    buttonOpen: {
-        backgroundColor: '#F194FF',
+    rowFront: {
+        width: 250,
+        backgroundColor: '#fff',
+        height: 50,
     },
-    buttonClose: {
-        backgroundColor: '#2196F3',
+    rowBack: {
+        alignItems: 'center',
+        backgroundColor: 'red',
+        flex: 1,
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingLeft: 15,
     },
-    textStyle: {
-        color: 'white',
-        fontWeight: 'bold',
-        textAlign: 'center',
+    backRightBtn: {
+        alignItems: 'center',
+        bottom: 0,
+        justifyContent: 'center',
+        position: 'absolute',
+        top: 0,
+        width: 75,
+    },
+    backRightBtnRight: {
+        backgroundColor: 'red',
+        right: 0,
     },
 });
 

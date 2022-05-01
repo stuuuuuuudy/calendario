@@ -14,14 +14,14 @@ export const add = (date, title) => ({
 // 초기 상태 선언
 const initialState = {
     schedules: {
-        '2022-04-11': [
+        '2022-05-11': [
             { id: 1, title: '할 일 1' },
             { id: 2, title: '할 일 2' },
             { id: 3, title: '할 일 3' },
         ],
     },
     markedDates: {
-        '2022-04-11': { marked: true, dotColor: 'red' },
+        '2022-05-11': { marked: true, dotColor: 'red' },
     },
 };
 
