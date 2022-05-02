@@ -12,7 +12,7 @@ import {
 } from 'react-native';
 import ScheduleListModal from './components/ScheduleListModal';
 import ScheduleAddModal from './components/ScheduleAddModal';
-import { add } from './modules/schedules';
+import { addSchedule } from './modules/schedules';
 
 LocaleConfig.locales['ko'] = {
     monthNames: [
@@ -63,7 +63,7 @@ const App = () => {
     const [showListModal, setShowListModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
-    const onSave = text => dispatch(add(selectedDate, text));
+    const onSave = text => dispatch(addSchedule(selectedDate, text));
 
     // onPress 함수 관련 : https://intrepidgeeks.com/tutorial/event-function-error-in-react-reactnative-automatic-execution
     const openListModal = date => {

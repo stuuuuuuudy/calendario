@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useDispatch } from 'react-redux';
 import {
     Dimensions,
     Animated,
@@ -11,6 +12,7 @@ import {
 } from 'react-native';
 import { SwipeListView } from 'react-native-swipe-list-view';
 import ScheduleItem from './ScheduleItem';
+import { deleteSchedule } from '../modules/schedules';
 
 const ScheduleLayer = ({
     selectedDate,
@@ -19,6 +21,9 @@ const ScheduleLayer = ({
     setShowListModal,
     setShowAddModal,
 }) => {
+    const dispatch = useDispatch();
+    const rowTranslateAnimatedValues = schedules.reduce((acc, cur) => ({ ...acc, [`${cur.key}`]: new Animated.Value(1) }), {});
+
     const showAddModal = () => {
         // 추가 버튼 누르면 리스트modal 닫히고 추가 modal 오픈
         setShowListModal(false);
@@ -40,7 +45,7 @@ const ScheduleLayer = ({
                 toValue: 0,
                 duration: 200,
             }).start(() => {
-                // TODO: 삭제
+                dispatch(deleteSchedule(selectedDate, key));
                 this.animationIsRunning = false;
             });
         }
@@ -65,7 +70,7 @@ const ScheduleLayer = ({
                                 <ScheduleItem title={data.item.title} onPress={showModifyModal} />
                             </View>
                         )}
-                        renderHiddenItem={(data, rowMap) => (
+                        renderHiddenItem={() => (
                             <View style={styles.rowBack}>
                                 <View style={[styles.backRightBtn, styles.backRightBtnRight]}>
                                     <Text style={styles.backTextWhite}>Delete</Text>

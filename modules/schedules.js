@@ -5,19 +5,25 @@ export const MODIFY = 'schedule/MODIFY';
 
 // 액션 생성 함수
 // 나중에 컴포넌트에서 액션을 쉽게 발생시키기 위함
-export const add = (date, title) => ({
+export const addSchedule = (date, title) => ({
     type: ADD,
     date,
     title,
+});
+
+export const deleteSchedule = (date, key) => ({
+    type: DELETE,
+    date,
+    key,
 });
 
 // 초기 상태 선언
 const initialState = {
     schedules: {
         '2022-05-11': [
-            { id: 1, title: '할 일 1' },
-            { id: 2, title: '할 일 2' },
-            { id: 3, title: '할 일 3' },
+            { key: 1, title: '할 일 1' },
+            { key: 2, title: '할 일 2' },
+            { key: 3, title: '할 일 3' },
         ],
     },
     markedDates: {
@@ -28,21 +34,30 @@ const initialState = {
 // 리듀서 선언
 export default function reducer(state = initialState, action) {
     const getMarkedDates = (value) => Object.keys(value).reduce((acc, cur) => ({ ...acc, [cur]: { marked: true, dotColor: 'red' } }), {});
+    let selectedSchedule, newSchedules;
 
     switch (action.type) {
         case ADD:
-            const tmpSchedule = state.schedules[action.date] || [];
-            const nextId =
-                tmpSchedule.length > 0
-                    ? Math.max(...tmpSchedule.map(v => v.id)) + 1
+            selectedSchedule = state.schedules[action.date] || [];
+            const newKey =
+                selectedSchedule.length > 0
+                    ? Math.max(...selectedSchedule.map(v => v.key)) + 1
                     : 1;
-            const newSchedules = { ...state.schedules, [action.date]: tmpSchedule.concat({ title: action.title, id: nextId }) };
+            newSchedules = { ...state.schedules, [action.date]: selectedSchedule.concat({ title: action.title, key: newKey }) };
             return {
                 schedules: newSchedules,
                 markedDates: getMarkedDates(newSchedules)
             };
         case DELETE:
-            return state;
+            selectedSchedule = state.schedules[action.date] || [];
+            newSchedules = { ...state.schedules, [action.date]: selectedSchedule.filter(v => v.key !== action.key) };
+            if (newSchedules[action.date].length === 0) {
+                delete newSchedules[action.date];
+            }
+            return {
+                schedules: newSchedules,
+                markedDates: getMarkedDates(newSchedules)
+            };
         case MODIFY:
             return state;
         default:
