@@ -8,13 +8,19 @@ export const MODIFY = 'schedule/MODIFY';
 export const addSchedule = (date, title) => ({
     type: ADD,
     date,
-    title,
+    item,
 });
 
 export const deleteSchedule = (date, key) => ({
     type: DELETE,
     date,
     key,
+});
+
+export const modifySchedule = (date, item) => ({
+    type: MODIFY,
+    date,
+    item,
 });
 
 // 초기 상태 선언
@@ -59,7 +65,19 @@ export default function reducer(state = initialState, action) {
                 markedDates: getMarkedDates(newSchedules)
             };
         case MODIFY:
-            return state;
+            selectedSchedule = [...(state.schedules[action.date] || [])];
+            selectedSchedule.some(v => {
+                if (v.key === action.item.key) {
+                    v.title = action.item.title;
+                    return true;
+                }
+                return false;
+            })
+            newSchedules = { ...state.schedules, [action.date]: selectedSchedule };
+            return {
+                schedules: newSchedules,
+                markedDates: getMarkedDates(newSchedules)
+            };
         default:
             return state;
     }

@@ -20,18 +20,16 @@ const ScheduleLayer = ({
     showListModal,
     setShowListModal,
     setShowAddModal,
+    setSelectedSchedule,
 }) => {
     const dispatch = useDispatch();
     const rowTranslateAnimatedValues = schedules.reduce((acc, cur) => ({ ...acc, [`${cur.key}`]: new Animated.Value(1) }), {});
 
-    const showAddModal = () => {
-        // 추가 버튼 누르면 리스트modal 닫히고 추가 modal 오픈
+    const showAddModal = (item) => {
+        // 추가 버튼 누르면 리스트 modal 닫히고 추가 modal 오픈
+        setSelectedSchedule(item);
         setShowListModal(false);
         setShowAddModal(true);
-    };
-
-    const showModifyModal = () => {
-        // TODO: 수정
     };
 
     const onDeleteSchedule = swipeData => {
@@ -66,9 +64,11 @@ const ScheduleLayer = ({
                     <SwipeListView
                         data={schedules}
                         renderItem={(data) => (
-                            <View style={styles.rowFront}>
-                                <ScheduleItem title={data.item.title} onPress={showModifyModal} />
-                            </View>
+                            <TouchableOpacity onPress={() => showAddModal(data.item)}>
+                                <View style={styles.rowFront}>
+                                    <ScheduleItem title={data.item.title} />
+                                </View>
+                            </TouchableOpacity>
                         )}
                         renderHiddenItem={() => (
                             <View style={styles.rowBack}>
@@ -89,7 +89,7 @@ const ScheduleLayer = ({
                 <TouchableOpacity
                     style={styles.addButton}
                     activeOpacity={0.5}
-                    onPress={showAddModal}>
+                    onPress={() => showAddModal({})}>
                     <Text style={styles.addButtonText}>+</Text>
                 </TouchableOpacity>
             </View>

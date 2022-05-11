@@ -10,19 +10,25 @@ import {
     Pressable,
 } from 'react-native';
 
-const ScheduleLayer = ({ showAddModal, setShowAddModal, onSave }) => {
-    const [text, setText] = useState('');
-    const onPressSave = () => {
-        onSave(text);
+const ScheduleLayer = ({ showAddModal, selectedSchedule, setShowAddModal, onSave }) => {
+    // TODO: 오픈할때마다 selectedSchedule.title 세팅하도록...이때 하는게 아니고!
+    const [text, setText] = useState(selectedSchedule.title || '');
+
+    const close = () => {
         Keyboard.dismiss();
         setShowAddModal(false);
         setText('');
+    }
+
+    const onPressSave = () => {
+        onSave({ ...selectedSchedule, title: text });
+        close();
     };
 
     return (
         <Modal animationType="slide" transparent={true} visible={showAddModal}>
             <Pressable style={styles.background}
-                onPress={() => setShowAddModal(false)}
+                onPress={close}
             />
             <View style={styles.modalView}>
                 <View style={styles.buttonView}>
@@ -32,7 +38,6 @@ const ScheduleLayer = ({ showAddModal, setShowAddModal, onSave }) => {
                     <TouchableOpacity activeOpacity={0.5} onPress={onPressSave}>
                         <Text style={styles.saveButton}>V</Text>
                     </TouchableOpacity>
-
                 </View>
                 <TextInput
                     placeholder="일정 제목"
