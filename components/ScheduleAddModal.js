@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
     View,
     Text,
@@ -11,8 +11,11 @@ import {
 } from 'react-native';
 
 const ScheduleLayer = ({ showAddModal, selectedSchedule, setShowAddModal, onSave }) => {
-    // TODO: 오픈할때마다 selectedSchedule.title 세팅하도록...이때 하는게 아니고!
-    const [text, setText] = useState(selectedSchedule.title || '');
+    const [text, setText] = useState('');
+
+    useEffect(() => {
+        setText(selectedSchedule.title || '');
+    }, [selectedSchedule.key, selectedSchedule.title]);
 
     const close = () => {
         Keyboard.dismiss();
