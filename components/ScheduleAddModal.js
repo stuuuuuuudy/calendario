@@ -14,8 +14,10 @@ const ScheduleLayer = ({ showAddModal, selectedSchedule, setShowAddModal, onSave
     const [text, setText] = useState('');
 
     useEffect(() => {
-        setText(selectedSchedule.title || '');
-    }, [selectedSchedule.key, selectedSchedule.title]);
+        if (showAddModal) {
+            setText(selectedSchedule.title || '');
+        }
+    }, [showAddModal]);
 
     const close = () => {
         Keyboard.dismiss();
