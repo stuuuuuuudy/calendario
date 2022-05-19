@@ -7,8 +7,6 @@ import {
 import {
     SafeAreaView,
     StyleSheet,
-    Text,
-    TouchableOpacity,
 } from 'react-native';
 import ScheduleListModal from './components/ScheduleListModal';
 import ScheduleAddModal from './components/ScheduleAddModal';
@@ -57,13 +55,17 @@ LocaleConfig.locales['ko'] = {
 };
 LocaleConfig.defaultLocale = 'ko';
 
+// TODO: 클릭 시, 빨간색 딜리트 스타일 나오는 것
+// TODO: 추가 레이어 눌렀을 때 날씨 가져올 수 있으면 가져오기
+
 const App = () => {
-    const { schedules, markedDates } = (useSelector(state => state)).schedules;
     const dispatch = useDispatch();
+    const { schedules, markedDates } = (useSelector(state => state)).schedules;
     const [showListModal, setShowListModal] = useState(false);
     const [showAddModal, setShowAddModal] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
     const [selectedSchedule, setSelectedSchedule] = useState({});
+
     const onSave = item => {
         if (item.key) {
             dispatch(modifySchedule(selectedDate, item));
